@@ -132,7 +132,6 @@ void Game::Run()
         champlist[i].ChampionList::SetMetaRating(r);
     }
 
-    
 
     
     //First Ban
