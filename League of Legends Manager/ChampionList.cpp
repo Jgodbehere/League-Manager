@@ -436,7 +436,7 @@ void ChampionList::SetMetaRating(int m)
 }
 void ChampionList::DefineTexture()
 {
-    if (!texture.loadFromFile(resourcePath() + name + "Square.png")) {
+    if (!texture.loadFromFile(name + "Square.png")) {
         
     }
     texturepointer = &texture;
