@@ -123,7 +123,6 @@ void Game::Run()
     //Champion Icons
     
     
-    
     //Set the Meta
 
     for (int i = 0; i < champlist.size(); i++)
