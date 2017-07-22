@@ -432,7 +432,7 @@ void ChampionList::Define(std::string n, std::string r, std::string o, std::stri
 void ChampionList::SetMetaRating(int m)
 {
     metarating = m;
-    
+   
 }
 void ChampionList::DefineTexture()
 {
