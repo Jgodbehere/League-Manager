@@ -922,6 +922,7 @@
 		16C443971D9FDBA900743183 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_LOCATION = NO;
 				INFOPLIST_FILE = "League of Legends Manager/League of Legends Manager-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "JG.${PRODUCT_NAME:rfc1034identifier}";
@@ -932,6 +933,7 @@
 		16C443981D9FDBA900743183 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEPLOYMENT_LOCATION = NO;
 				INFOPLIST_FILE = "League of Legends Manager/League of Legends Manager-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "JG.${PRODUCT_NAME:rfc1034identifier}";
