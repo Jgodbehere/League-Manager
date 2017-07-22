@@ -2,7 +2,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include "ResourcePath.hpp"
 #include "EventLog.hpp"
 #include "ChampionList.hpp"
 #include "Player.hpp"

@@ -9,7 +9,7 @@
 #include "EventLog.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "ResourcePath.hpp"
+
 
 std::vector<std::string> sarray(1000);
 std::vector<sf::Text> textarray(1000);

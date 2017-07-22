@@ -9,7 +9,7 @@
 #include "ChampionList.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "ResourcePath.hpp"
+
 
 std::vector<ChampionList> ChampionList::GenerateChampionList()
 {
