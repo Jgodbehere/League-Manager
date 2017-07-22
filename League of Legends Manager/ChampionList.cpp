@@ -13,7 +13,7 @@
 
 std::vector<ChampionList> ChampionList::GenerateChampionList()
 {
-    std::vector<ChampionList> list(133);
+    std::vector<ChampionList> list(134);
     
     ChampionList Aatrox;
     Aatrox.Define("Aatrox", "Top", "Jng", "AD");

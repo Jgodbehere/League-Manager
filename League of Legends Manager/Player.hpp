@@ -17,9 +17,7 @@
 class Player
 {
 public:
-    static std::vector<Player::Player> GeneratePlayers();
-    static Player GetPlayer();
-    
+
 };
 
 #endif /* Game_hpp */
