@@ -15,7 +15,7 @@ void Game::Run()
     int windowheight = 1080;
     sf::RenderWindow window(sf::VideoMode(windowwidth, windowheight), "League Manager Alpha");
     
-    
+
     //Generate Champion List
     std::string role;
     sf::Time t1;
@@ -51,7 +51,7 @@ void Game::Run()
     //Background
     sf::Texture background;
     sf::Texture * backgroundpointer = &background;
-    if (!background.loadFromFile(resourcePath() + "background.png")) {
+    if (!background.loadFromFile("background.png")) {
 
     }
     //Map
@@ -59,28 +59,28 @@ void Game::Run()
     int imagewidth = windowwidth/3;
     int imageheight = windowwidth/3;
     sf::Texture * mappointer = &map;
-    if (!map.loadFromFile(resourcePath() + "map.png")) {
+    if (!map.loadFromFile("map.png")) {
 
     }
     //Tile Set
     sf::Texture tileset;
-    if (!tileset.loadFromFile(resourcePath() + "Tile.png")) {
+    if (!tileset.loadFromFile("Tile.png")) {
 
     }
     sf::Texture * texturepointer = &tileset;
     //Scoreboard
     sf::Texture blueside;
-    if (!blueside.loadFromFile(resourcePath() + "blueside.png")) {
+    if (!blueside.loadFromFile("blueside.png")) {
 
     }
     sf::Texture * bluesidepointer = &blueside;
     sf::Texture redside;
-    if (!redside.loadFromFile(resourcePath() + "blueside.png")) {
+    if (!redside.loadFromFile("blueside.png")) {
 
     }
     sf::Texture * redsidepointer = &redside;
     sf::Texture scoreboard;
-    if (!scoreboard.loadFromFile(resourcePath() + "scoreboard.png")) {
+    if (!scoreboard.loadFromFile("scoreboard.png")) {
 
     }
     sf::Texture * scoreboardpointer = &scoreboard;
@@ -524,14 +524,14 @@ void Game::Run()
     
     // Example Text
     sf::Font font;
-    if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {
+    if (!font.loadFromFile( "sansation.ttf")) {
     }
     std::vector<sf::Text> textarray(1000);
     
     
     // Load a music to play
     sf::Music music;
-    if (!music.openFromFile(resourcePath() + "fight_music1.ogg")) {
+    if (!music.openFromFile( "fight_music1.ogg")) {
     }
     
     // Play the music

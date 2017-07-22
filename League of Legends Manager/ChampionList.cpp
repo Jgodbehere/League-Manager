@@ -13,7 +13,7 @@
 
 std::vector<ChampionList> ChampionList::GenerateChampionList()
 {
-    std::vector<ChampionList> list(133);
+    std::vector<ChampionList> list(134);
     
     ChampionList Aatrox;
     Aatrox.Define("Aatrox", "Top", "Jng", "AD");
@@ -436,7 +436,7 @@ void ChampionList::SetMetaRating(int m)
 }
 void ChampionList::DefineTexture()
 {
-    if (!texture.loadFromFile(resourcePath() + name + "Square.png")) {
+    if (!texture.loadFromFile(name + "Square.png")) {
         
     }
     texturepointer = &texture;
