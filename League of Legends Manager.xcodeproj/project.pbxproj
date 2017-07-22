@@ -366,7 +366,6 @@
 			isa = PBXGroup;
 			children = (
 				16C443A01D9FDC3100743183 /* Game.cpp */,
-				162517261F19540600FCE8A8 /* KaynSquare.png */,
 				16C443A11D9FDC3100743183 /* Game.hpp */,
 				16C4439D1D9FDC3100743183 /* EventLog.cpp */,
 				16C4439E1D9FDC3100743183 /* EventLog.hpp */,
@@ -395,6 +394,7 @@
 		16C4438B1D9FDBA900743183 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				162517261F19540600FCE8A8 /* KaynSquare.png */,
 				160B93951EF92B79009019DC /* Twisted FateSquare.png */,
 				160B93931EF91532009019DC /* Xin ZhaoSquare.png */,
 				160B92E71EF9148B009019DC /* ZyraSquare.png */,
