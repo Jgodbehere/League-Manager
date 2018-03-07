@@ -153,3 +153,7 @@ std::vector<Player> Player::GeneratePlayerList(bool random, int l)
 	return list;
 }
 
+void Player::Define(std::string m, std::string n, std::string r, std::string o, std::vector<std::string>, std::string t)
+{
+}
+

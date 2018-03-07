@@ -17,7 +17,7 @@
 class Player
 {
 public:
-	static std::vector<Player> GeneratePlayerList(bool random);
+	static std::vector<Player> GeneratePlayerList(bool random, int region);
 	void Define(std::string m, std::string n, std::string r, std::string o, std::vector<std::string>, std::string t);
 
 };
