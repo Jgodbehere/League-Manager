@@ -11,8 +11,11 @@ void Game::Run()
 {
     // Create the main window
     int windowwidth = 1920;
-    int windowheight = 1080;
-    sf::RenderWindow window(sf::VideoMode(windowwidth, windowheight), "League Manager Alpha");
+    int windowheight = 1080; 
+	sf::VideoMode videomode = sf::VideoMode(windowwidth, windowheight);
+	std::string programname = "League Manager Alpha";
+	sf::Uint32 windowtype = sf::Style::Resize;
+    sf::RenderWindow window(videomode, programname, windowtype);
     
     
     //Generate Champion List
