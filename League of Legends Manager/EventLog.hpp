@@ -1,5 +1,5 @@
 //
-//  Game.hpp
+//  EventLog.hpp
 //  Test
 //
 //  Created by Jacob Godbehere on 3/22/16.
@@ -23,4 +23,4 @@ public:
     
 };
 
-#endif /* Game_hpp */
+#endif /* EventLog_hpp */

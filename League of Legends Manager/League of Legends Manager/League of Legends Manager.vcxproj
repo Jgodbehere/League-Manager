@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="..\ChampionList.cpp" />
     <ClCompile Include="..\EventLog.cpp" />
+    <ClCompile Include="..\EventManager.cpp" />
     <ClCompile Include="..\Game.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\Player.cpp" />
@@ -164,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="..\ChampionList.hpp" />
     <ClInclude Include="..\EventLog.hpp" />
+    <ClInclude Include="..\EventManager.hpp" />
     <ClInclude Include="..\Game.hpp" />
     <ClInclude Include="..\Player.hpp" />
   </ItemGroup>

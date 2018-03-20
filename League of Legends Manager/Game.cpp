@@ -5,6 +5,7 @@
 #include "EventLog.hpp"
 #include "ChampionList.hpp"
 #include "Player.hpp"
+#include "EventManager.hpp"
 
 
 void Game::Run()
@@ -14,7 +15,7 @@ void Game::Run()
     int windowheight = 1080; 
 	sf::VideoMode videomode = sf::VideoMode(windowwidth, windowheight);
 	std::string programname = "League Manager Alpha";
-	sf::Uint32 windowtype = sf::Style::Resize;
+	sf::Uint32 windowtype = sf::Style::Close;
     sf::RenderWindow window(videomode, programname, windowtype);
     
     
