@@ -10,6 +10,7 @@
 #define ChampionList_hpp
 
 #include <stdio.h>
+#include "Player.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -25,7 +26,6 @@ class ChampionList
     sf::Texture * texturepointer;
 public:
     static std::vector<ChampionList> GenerateChampionList();
-    static ChampionList GetChampionList();
     void Define(std::string n, std::string r, std::string o, std::string d);
     void SetMetaRating(int m);
     void DefineTexture();
@@ -35,11 +35,11 @@ public:
     std::string GetDamageType();
     sf::Texture GetTexture();
     sf::Texture * GetTexturePointer();
+	static std::vector<ChampionList> GenerateGameList(std::vector<Player> playerlist);
     bool operator==(const ChampionList& p) const
     {
         return name == p.name;
     }
-
 };
 
 #endif /* ChampionList_hpp */
