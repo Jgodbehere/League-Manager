@@ -249,7 +249,7 @@ std::vector<ChampionList> ChampionList::GenerateChampionList()
     Olaf.Define("Olaf", "Jng", "Top", "AD");
     list[76] = Olaf;
     ChampionList Orianna;
-    Orianna.Define("Orianna", "Mid", "Sup", "AP");
+    Orianna.Define("Orianna", "Mid", "", "AP");
     list[77] = Orianna;
     ChampionList Pantheon;
     Pantheon.Define("Pantheon", "Top", "", "AD");
@@ -509,690 +509,327 @@ std::vector<ChampionList> ChampionList::GenerateGameList(std::vector<Player> pl)
 	//MetaScore = MetaRating*PlayerAffinity*Comp
 	//EnemyScore = MetaRating*PlayerAffinity*Comp*CoachSkill
 	//Missing Comp and CoachSkill 
-
+	int orderiterator = 0;
 	int metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
+	while (orderiterator < 6)
 	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
+		metar = 0;
+		banchamp = champlist[0];
+		if (orderiterator != 1 && orderiterator % 2 == 0)
 		{
-			for (int z = 6; z < playerlist.size(); z++)
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+				std::vector<std::string> champnames(3);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
 				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+					for (int z = 6; z < playerlist.size(); z++)
 					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
 					}
 				}
-				else
+			}
+		}
+		else if (orderiterator % 2 != 0)
+		{
+			for (int i = 0; i < champlist.size(); i++)
+			{
+				std::vector<std::string> champnames(3);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
 				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
+					for (int z = 0; z < playerlist.size() / 2; z++)
 					{
-						metar = banchamp.ChampionList::GetMetaRating();
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < champlist.size(); i++)
+			{
+				if (champlist[i].ChampionList::GetMetaRating() >= banchamp.ChampionList::GetMetaRating())
+				{
+					if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
+					{
 						banchamp = champlist[i];
 					}
 				}
 			}
 		}
-	}
-	gamelist[0] = banchamp;
-	EventLog::AddEvent("Blue side banned " + banchamp.GetName());
-	
-	//Second Ban
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		if (champlist[i].ChampionList::GetMetaRating() >= banchamp.ChampionList::GetMetaRating())
+		gamelist[orderiterator] = banchamp;
+		if (orderiterator % 2 == 0)
 		{
-			if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
-			{
-				banchamp = champlist[i];
-			}
+			EventLog::AddEvent("Blue side banned " + banchamp.GetName());
 		}
-	}
-	gamelist[1] = banchamp;
-	EventLog::AddEvent("Red side banned " + banchamp.GetName());
-	
-
-	//Third Ban
-	banchamp = champlist[0];
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
+		else
 		{
-			for (int z = 6; z < playerlist.size(); z++)
-			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
-					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
-					}
-				}
-			}
+			EventLog::AddEvent("Red side banned " + banchamp.GetName());
 		}
+		orderiterator++;
 	}
-	gamelist[2] = banchamp;
-	EventLog::AddEvent("Blue side banned " + banchamp.GetName());
-	
-
-	//Fourth Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
-		{
-			for (int z = 0; z < playerlist.size()/2; z++)
-			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
-					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
-					}
-				}
-			}
-		}
-	}
-	gamelist[3] = banchamp;
-	EventLog::AddEvent("Red side banned " + banchamp.GetName());
-	
-
-	//Fifth Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
-		{
-			for (int z = 6; z < playerlist.size(); z++)
-			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
-					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
-					}
-				}
-			}
-		}
-	}
-	gamelist[4] = banchamp;
-	EventLog::AddEvent("Blue side banned " + banchamp.GetName());
-	
-
-	//Sixth Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end())
-		{
-			for (int z = 0; z < playerlist.size()/2; z++)
-			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
-					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
-					}
-				}
-			}
-		}
-	}
-	gamelist[5] = banchamp;
-	EventLog::AddEvent("Red side banned " + banchamp.GetName());
-	
-
-	//Blue Side
-	//Top
-	metar = 0;
-	bluetop.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Top";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
-		{
-			champnames = playerlist[0].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-			{
-				if (metar <= (bluetop.ChampionList::GetMetaRating() + playerlist[0].Player::GetPlayerSkill()))
-				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[0].Player::GetPlayerSkill();
-					bluetop = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= bluetop.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					bluetop.ChampionList::SetMetaRating(metar);
-					bluetop = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[6] = bluetop;
-	EventLog::AddEvent(playerlist[0].Player::GetAlias() + " picked " + bluetop.GetName());
-
-	
-
-	//Red Side
-
-	//Top
-	metar = 0;
-	redtop.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Top";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
-		{
-			champnames = playerlist[6].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-			{
-				if (metar <= (redtop.ChampionList::GetMetaRating() + playerlist[6].Player::GetPlayerSkill()))
-				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[6].Player::GetPlayerSkill();
-					redtop = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= redtop.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					redtop.ChampionList::SetMetaRating(metar);
-					redtop = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[7] = redtop;
-	EventLog::AddEvent("" + playerlist[6].Player::GetAlias() + " picked " + redtop.GetName());
-
-	
-
-	//Jng
-	metar = 0;
-	redjng.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Jng";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
-		{
-			champnames = playerlist[7].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-			{
-				if (metar <= (redjng.ChampionList::GetMetaRating() + playerlist[7].Player::GetPlayerSkill()))
-				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[7].Player::GetPlayerSkill();
-					redjng = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= redjng.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					redjng.ChampionList::SetMetaRating(metar);
-					redjng = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[8] = redjng;
-	EventLog::AddEvent(playerlist[7].Player::GetAlias() + " picked " + redjng.GetName());
-	
 	
 
 	//Blue Side
 
-	//Jng
-	metar = 0;
-	bluejng.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
+	std::vector<std::string> blueroles(4);
+	std::vector<std::string> redroles(4);
+	std::vector<std::string>::iterator redroleiterator;
+	std::vector<std::string>::iterator blueroleiterator;
+	redroleiterator = redroles.begin();
+	blueroleiterator = blueroles.begin();
+	while (orderiterator < 12)
 	{
-		std::vector<std::string> champnames(4);
-		role = "Jng";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
+		metar = 0;
+		banchamp = champlist[0];
+		if (orderiterator == 6 || orderiterator == 9 || orderiterator == 10)
 		{
-			champnames = playerlist[1].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				if (metar <= (bluejng.ChampionList::GetMetaRating() + playerlist[1].Player::GetPlayerSkill()))
+				std::vector<std::string> champnames(4);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && std::find(blueroles.begin(), blueroles.end(), champlist[i].GetRole()) == blueroles.end())
 				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[1].Player::GetPlayerSkill();
-					bluejng = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= bluejng.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					bluejng.ChampionList::SetMetaRating(metar);
-					bluejng = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[9] = bluejng;
-	EventLog::AddEvent(playerlist[1].Player::GetAlias() + " picked " + bluejng.GetName());
-	
-
-	//Mid
-	metar = 0;
-	bluemid.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Mid";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
-		{
-			champnames = playerlist[2].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-			{
-				if (metar <= (bluemid.ChampionList::GetMetaRating() + playerlist[2].Player::GetPlayerSkill()))
-				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[2].Player::GetPlayerSkill();
-					bluemid = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= bluemid.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					bluemid.ChampionList::SetMetaRating(metar);
-					bluemid = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[10] = bluemid;
-	EventLog::AddEvent(playerlist[2].Player::GetAlias() + " picked " + bluemid.GetName());
-
-	//Red Side
-
-	//Mid
-	metar = 0;
-	redmid.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Mid";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
-		{
-			champnames = playerlist[8].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-			{
-				if (metar <= (redmid.ChampionList::GetMetaRating() + playerlist[8].Player::GetPlayerSkill()))
-				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[8].Player::GetPlayerSkill();
-					redmid = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= redmid.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					redmid.ChampionList::SetMetaRating(metar);
-					redmid = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[11] = redmid;
-	EventLog::AddEvent(playerlist[8].Player::GetAlias() + " picked " + redmid.GetName());
-
-
-	//Seventh Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && (champlist[i].GetRole().find("ADC") != std::string::npos || champlist[i].GetRole().find("Sup") != std::string::npos))
-		{
-			for (int z = 3; z < playerlist.size()/2; z++)
-			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+					for (int z = 6; z < playerlist.size(); z++)
 					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
 					}
 				}
 			}
+			blueroleiterator = blueroles.insert(blueroleiterator, banchamp.GetRole());
 		}
-	}
-	gamelist[12] = banchamp;
-	EventLog::AddEvent("Red side banned " + banchamp.GetName());
-	
-
-	//Eighth Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && (champlist[i].GetRole().find("ADC") != std::string::npos || champlist[i].GetRole().find("Sup") != std::string::npos))
+		else
 		{
-			for (int z = 9; z < playerlist.size(); z++)
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+				std::vector<std::string> champnames(4);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && std::find(redroles.begin(), redroles.end(), champlist[i].GetRole()) == redroles.end())
 				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+					for (int z = 0; z < playerlist.size() / 2; z++)
 					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
 					}
 				}
 			}
+			redroleiterator = redroles.insert(redroleiterator, banchamp.GetRole());
 		}
+		gamelist[orderiterator] = banchamp;
+		EventLog::AddEvent(playerlist[0].Player::GetAlias() + " picked " + banchamp.GetName());
+		orderiterator++;
 	}
-	gamelist[13] = banchamp;
-	EventLog::AddEvent("Blue side banned " + banchamp.GetName());
-	
 
-	//Nineth Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
+	while (orderiterator < 16)
 	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && (champlist[i].GetRole().find("ADC") != std::string::npos || champlist[i].GetRole().find("Sup") != std::string::npos))
+		metar = 0;
+		banchamp = champlist[0];
+		if (orderiterator % 2 != 0)
 		{
-			for (int z = 9; z < playerlist.size(); z++)
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+				std::vector<std::string> champnames(4);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && std::find(blueroles.begin(), blueroles.end(), champlist[i].GetRole()) == blueroles.end())
 				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+					for (int z = 6; z < playerlist.size(); z++)
 					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
-					}
-				}
-			}
-		}
-	}
-	gamelist[14] = banchamp;
-	EventLog::AddEvent("Red side banned " + banchamp.GetName());
-	
-
-	//Tenth Ban
-	metar = 0;
-	banchamp = champlist[0];
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(3);
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && (champlist[i].GetRole().find("ADC") != std::string::npos || champlist[i].GetRole().find("Sup") != std::string::npos))
-		{
-			for (int z = 3; z < playerlist.size()/2; z++)
-			{
-				champnames = playerlist[z].Player::GetBestChamps();
-				if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-				{
-					if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
-					{
-						metar = champlist[i].GetMetaRating();
-						metar += playerlist[z].Player::GetPlayerSkill();
-						banchamp = champlist[i];
-					}
-				}
-				else
-				{
-					if (metar <= banchamp.ChampionList::GetMetaRating())
-					{
-						metar = banchamp.ChampionList::GetMetaRating();
-						banchamp = champlist[i];
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
 					}
 				}
 			}
+			gamelist[orderiterator] = banchamp;
+			EventLog::AddEvent("Red team banned " + banchamp.GetName());
 		}
-	}
-	gamelist[15] = banchamp;
-	EventLog::AddEvent("Blue side banned " + banchamp.GetName());
-	
-
-
-	//Red Side
-
-	//ADC
-	metar = 0;
-	redadc.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "ADC";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
+		else
 		{
-			champnames = playerlist[9].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				if (metar <= (redadc.ChampionList::GetMetaRating() + playerlist[9].Player::GetPlayerSkill()))
+				std::vector<std::string> champnames(4);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && std::find(redroles.begin(), redroles.end(), champlist[i].GetRole()) == redroles.end())
 				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[9].Player::GetPlayerSkill();
-					redadc = champlist[i];
+					for (int z = 0; z < playerlist.size() / 2; z++)
+					{
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
+					}
 				}
 			}
-			else
-			{
-				if (metar <= redadc.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					redadc.ChampionList::SetMetaRating(metar);
-					redadc = champlist[i];
-				}
-			}
+			gamelist[orderiterator] = banchamp;
+			EventLog::AddEvent("Blue team banned " + banchamp.GetName());
 		}
+		orderiterator++;
 	}
-	gamelist[16] = redadc;
-	EventLog::AddEvent(playerlist[9].Player::GetAlias() + " picked " + redadc.GetName());
 
-	//Blue Side
 
-	//ADC
-	metar = 0;
-	blueadc.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
+	while (orderiterator < 20)
 	{
-		std::vector<std::string> champnames(4);
-		role = "ADC";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
+		metar = 0;
+		banchamp = champlist[0];
+		if (orderiterator == 17 || orderiterator == 18)
 		{
-			champnames = playerlist[3].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				if (metar <= (blueadc.ChampionList::GetMetaRating() + playerlist[3].Player::GetPlayerSkill()))
+				std::vector<std::string> champnames(4);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && std::find(blueroles.begin(), blueroles.end(), champlist[i].GetRole()) == blueroles.end())
 				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[3].Player::GetPlayerSkill();
-					blueadc = champlist[i];
+					for (int z = 6; z < playerlist.size(); z++)
+					{
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
+					}
 				}
 			}
-			else
-			{
-				if (metar <= blueadc.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					blueadc.ChampionList::SetMetaRating(metar);
-					blueadc = champlist[i];
-				}
-			}
+			blueroleiterator = blueroles.insert(blueroleiterator, banchamp.GetRole());
 		}
-	}
-	gamelist[17] = blueadc;
-	EventLog::AddEvent(playerlist[3].Player::GetAlias() + " picked " + blueadc.GetName());
-	
-	
-	//Sup
-	metar = 0;
-	bluesup.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Sup";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
+		else
 		{
-			champnames = playerlist[4].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+			for (int i = 0; i < champlist.size(); i++)
 			{
-				if (metar <= (bluesup.ChampionList::GetMetaRating() + playerlist[4].Player::GetPlayerSkill()))
+				std::vector<std::string> champnames(4);
+				if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && std::find(redroles.begin(), redroles.end(), champlist[i].GetRole()) == redroles.end())
 				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[4].Player::GetPlayerSkill();
-					bluesup = champlist[i];
+					for (int z = 0; z < playerlist.size() / 2; z++)
+					{
+						champnames = playerlist[z].Player::GetBestChamps();
+						if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
+						{
+							if (metar <= (banchamp.ChampionList::GetMetaRating() + playerlist[z].Player::GetPlayerSkill()))
+							{
+								metar = champlist[i].GetMetaRating();
+								metar += playerlist[z].Player::GetPlayerSkill();
+								banchamp = champlist[i];
+							}
+						}
+						else
+						{
+							if (metar <= banchamp.ChampionList::GetMetaRating())
+							{
+								metar = banchamp.ChampionList::GetMetaRating();
+								banchamp = champlist[i];
+							}
+						}
+					}
 				}
 			}
-			else
-			{
-				if (metar <= bluesup.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					bluesup.ChampionList::SetMetaRating(metar);
-					bluesup = champlist[i];
-				}
-			}
+			redroleiterator = redroles.insert(redroleiterator, banchamp.GetRole());
 		}
+		gamelist[orderiterator] = banchamp;
+		EventLog::AddEvent(playerlist[0].Player::GetAlias() + " picked " + banchamp.GetName());
+		orderiterator++;
 	}
-	gamelist[18] = bluesup;
-	EventLog::AddEvent(playerlist[4].Player::GetAlias() + " picked " + bluesup.GetName());
-	
-	
-	//Red Side
-
-	//Sup
-	metar = 0;
-	redsup.SetMetaRating(0);
-	for (int i = 0; i < champlist.size(); i++)
-	{
-		std::vector<std::string> champnames(4);
-		role = "Sup";
-		if (std::find(gamelist.begin(), gamelist.end(), champlist[i]) == gamelist.end() && champlist[i].GetRole().find(role) != std::string::npos)
-		{
-			champnames = playerlist[10].Player::GetBestChamps();
-			if (std::find(champnames.begin(), champnames.end(), champlist[i].GetName()) != champnames.end())
-			{
-				if (metar <= (redsup.ChampionList::GetMetaRating() + playerlist[10].Player::GetPlayerSkill()))
-				{
-					metar = champlist[i].GetMetaRating();
-					metar += playerlist[10].Player::GetPlayerSkill();
-					redsup = champlist[i];
-				}
-			}
-			else
-			{
-				if (metar <= redsup.ChampionList::GetMetaRating())
-				{
-					metar = champlist[i].GetMetaRating();
-					redsup.ChampionList::SetMetaRating(metar);
-					redsup = champlist[i];
-				}
-			}
-		}
-	}
-	gamelist[19] = redsup;
-	EventLog::AddEvent(playerlist[10].Player::GetAlias() + " picked " + redsup.GetName());
 	
 
 	return gamelist;
