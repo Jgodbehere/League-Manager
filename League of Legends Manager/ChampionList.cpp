@@ -479,6 +479,7 @@ std::vector<ChampionList> ChampionList::GenerateGameList(std::vector<Player> pl)
 	std::vector<sf::RectangleShape> EventIcon(1000);
 	champlist = ChampionList::GenerateChampionList();
 	std::vector<Player> playerlist = pl;
+	std::string name;
 
 	//Create ChampionList Objects
 	ChampionList bluetop;
@@ -646,6 +647,27 @@ std::vector<ChampionList> ChampionList::GenerateGameList(std::vector<Player> pl)
 				}
 			}
 			blueroleiterator = blueroles.insert(blueroleiterator, banchamp.GetRole());
+			if (banchamp.GetRole().compare("Top") == 0)
+			{
+				playerlist[0].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Jng") == 0)
+			{
+				playerlist[1].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Mid") == 0)
+			{
+				playerlist[2].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("ADC") == 0)
+			{
+				playerlist[3].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Sup") == 0)
+			{
+				playerlist[4].SetCurrentChamp(banchamp.GetName());
+			}
+			EventLog::AddEvent("Blue team picked " + banchamp.GetName());
 		}
 		else
 		{
@@ -678,9 +700,29 @@ std::vector<ChampionList> ChampionList::GenerateGameList(std::vector<Player> pl)
 				}
 			}
 			redroleiterator = redroles.insert(redroleiterator, banchamp.GetRole());
+			if (banchamp.GetRole().compare("Top") == 0)
+			{
+				playerlist[6].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Jng") == 0)
+			{
+				playerlist[7].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Mid") == 0)
+			{
+				playerlist[8].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("ADC") == 0)
+			{
+				playerlist[9].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Sup") == 0)
+			{
+				playerlist[10].SetCurrentChamp(banchamp.GetName());
+			}
+			EventLog::AddEvent("Red team picked " + banchamp.GetName());
 		}
 		gamelist[orderiterator] = banchamp;
-		EventLog::AddEvent(playerlist[0].Player::GetAlias() + " picked " + banchamp.GetName());
 		orderiterator++;
 	}
 
@@ -793,6 +835,27 @@ std::vector<ChampionList> ChampionList::GenerateGameList(std::vector<Player> pl)
 				}
 			}
 			blueroleiterator = blueroles.insert(blueroleiterator, banchamp.GetRole());
+			if (banchamp.GetRole().compare("Top") == 0)
+			{
+				playerlist[0].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Jng") == 0)
+			{
+				playerlist[1].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Mid") == 0)
+			{
+				playerlist[2].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("ADC") == 0)
+			{
+				playerlist[3].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Sup") == 0)
+			{
+				playerlist[4].SetCurrentChamp(banchamp.GetName());
+			}
+			EventLog::AddEvent("Blue team picked " + banchamp.GetName());
 		}
 		else
 		{
@@ -825,9 +888,29 @@ std::vector<ChampionList> ChampionList::GenerateGameList(std::vector<Player> pl)
 				}
 			}
 			redroleiterator = redroles.insert(redroleiterator, banchamp.GetRole());
+			if (banchamp.GetRole().compare("Top") == 0)
+			{
+				playerlist[6].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Jng") == 0)
+			{
+				playerlist[7].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Mid") == 0)
+			{
+				playerlist[8].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("ADC") == 0)
+			{
+				playerlist[9].SetCurrentChamp(banchamp.GetName());
+			}
+			else if (banchamp.GetRole().compare("Sup") == 0)
+			{
+				playerlist[10].SetCurrentChamp(banchamp.GetName());
+			}
+			EventLog::AddEvent("Red team picked " + banchamp.GetName());
 		}
 		gamelist[orderiterator] = banchamp;
-		EventLog::AddEvent(playerlist[0].Player::GetAlias() + " picked " + banchamp.GetName());
 		orderiterator++;
 	}
 	

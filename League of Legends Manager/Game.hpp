@@ -5,7 +5,7 @@
 //  Created by Jacob Godbehere on 3/22/16.
 //  Copyright © 2016 Jacob Godbehere. All rights reserved.
 //
-
+#pragma once
 #ifndef Game_hpp
 #define Game_hpp
 

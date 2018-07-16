@@ -5,7 +5,7 @@
 //  Created by Jacob Godbehere on 3/22/16.
 //  Copyright © 2016 Jacob Godbehere. All rights reserved.
 //
-
+#pragma once
 #ifndef Player_hpp
 #define Player_hpp
 
@@ -13,6 +13,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+
 
 class Player
 {
@@ -23,9 +24,12 @@ class Player
 	std::string offrole;
 	std::string teamname;
 	int playerskill;
+	std::string currentchampion;
+	
+
 public:
 	static std::vector<Player> GeneratePlayerList(bool random, int region, std::string team1, std::string team2);
-	void Define(std::string m, std::string n, std::string r, std::string o, std::vector<std::string>, std::string t, int playerskill);
+	void Define(std::string m, std::string n, std::string r, std::string o, std::vector<std::string> c, std::string t, int playerskill, std::string cc);
 
 	std::string GetAlias();
 
@@ -40,6 +44,10 @@ public:
 	std::string GetTeamName();
 
 	int GetPlayerSkill();
+
+	std::string GetCurrentChamp();
+
+	void SetCurrentChamp(std::string ch);
 
 };
 

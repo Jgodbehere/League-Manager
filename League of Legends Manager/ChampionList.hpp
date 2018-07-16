@@ -5,15 +5,16 @@
 //  Created by Jacob Godbehere on 3/22/16.
 //  Copyright © 2016 Jacob Godbehere. All rights reserved.
 //
-
+#pragma once
 #ifndef ChampionList_hpp
 #define ChampionList_hpp
 
 #include <stdio.h>
-#include "Player.hpp"
+#include "ChampionList.hpp"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "Player.hpp"
 
 class ChampionList
 {
